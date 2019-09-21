@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - 1.11
+  - 1.12
+  - 1.13
+
+before_script:
+  - go get github.com/mongodb/mongo-go-driver
+
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out && $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
+
+env:
+  global:
+    - secure: "YtlNQz377cQHsYwjrGQyk15gkIV6lsvnfibi9CgXMiNaHnIIov+4xAdrD5KwyCso3LURckwQMQD+j058Z9EYsCKwxYVFlXmjb7aITevaCxV9QwKCWSsqHbeRvWTMp1EqDzPF3HphWxwmWqAIKQCwbiuY6qowDPvBHWb4C5jIZkmekIsMw82vmmBVea+ZKy+RvLp8A6wCUh2JsVzuwsP0hVR83V9QJFxZrgBKU+lLLEiiXajzEufKQZeTo1FFoCbGmk3by3mVUgXjMclJwjfLMWUc2a3N3qamBPOigClIVOB7uO2XrfoyuvVMDhF9P88ZCxxbx2aXPXddjlIDVKxt68NLTtBZtKkiFMquJzy60RvrGfRqxKq+qfEHEiASBLk9gCWXGdqd+R41aH7Z0Z5AVA62TSW1UcVBkDlFkQZ7ghVDWbYiSwFj+ek70g2RTV5V8bojLYAUq1pR5VU6/Tcz+WA+V/7MH5LTvmGxUM0zkDzJf0wpp2alov9vQ285lU+8T6Z1sS1qKxfheWiYm3kipHAyQiLskSrb9OuSYk6JV95dbWQYzbhBYA3Epjn7vTWer2c3d2QARaxtewQ5rLPeONNmQI5IwCHmZRXhGX7WfY3BXBGRJHcJsMAZLZXJPj0bM1OUu6sHe/6164nIv1P8HiWsCyvmZGytjtdxIpVqtfA="
+    - GO111MODULE=on
