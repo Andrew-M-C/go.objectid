@@ -74,14 +74,7 @@ func New16(t ...time.Time) ObjectID {
 	}
 
 	id := primitive.NewObjectIDFromTimestamp(tm)
-	var tailing []byte
-
-	if nano := tm.Nanosecond(); nano == 0 {
-		tailing = rand4Bytes()
-	} else {
-		tailing = convNanosecToBytes(nano)
-	}
-
+	tailing := convTimeToTailingBytes(&tm)
 	return append(id[:], tailing...)
 }
 
@@ -101,4 +94,12 @@ func convNanosecToBytes(nano int) []byte {
 
 func convBytesToNanosec(b []byte) int {
 	return int(binary.BigEndian.Uint32(b))
+}
+
+func convTimeToTailingBytes(t *time.Time) []byte {
+	nano := t.Nanosecond()
+	if 0 == nano {
+		return rand4Bytes()
+	}
+	return convNanosecToBytes(nano)
 }
