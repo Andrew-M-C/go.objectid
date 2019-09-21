@@ -5,6 +5,9 @@ go:
   - 1.12
   - 1.13
 
+install:
+  - go get github.com/mattn/goveralls
+
 before_script:
   - go get github.com/mongodb/mongo-go-driver
 
