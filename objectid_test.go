@@ -1,6 +1,7 @@
 package objectid
 
 import (
+	"encoding/base64"
 	"testing"
 	"time"
 )
@@ -81,4 +82,19 @@ func Test_MiscErrors(t *testing.T) {
 		t.Errorf("abnormal id should be nil!")
 		return
 	}
+}
+
+func TestObjectidBase64(t *testing.T) {
+	b64 := base64.StdEncoding
+	id16 := New16()
+	t.Logf("id16: %v", id16)
+
+	s16 := b64.EncodeToString(id16)
+	t.Logf("base64 for id16: %s, len %d", s16, len(s16))
+
+	id12 := New12()
+	t.Logf("id12: %v", id12)
+
+	s12 := b64.EncodeToString(id12)
+	t.Logf("base64 for id12: %s, len %d", s12, len(s12))
 }

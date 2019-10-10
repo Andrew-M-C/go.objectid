@@ -1,3 +1,12 @@
+/*
+Package objectid provides MongoDB-objectId-like with 16-byte-length support (32 bytes in string). This could be replacement of UUID.
+
+The simplest way to implement 16-bytes long object ID (32 bytes as hex string) is adding random binaries in the tailing. However, as nanoseconds are also quite randomized enough, thus I use nanoseconds instead.
+
+	This objectId has many advantages comparing to UUID:
+	1. An ObjectID has timestamp information, which can be very useful in many case. Such as database sharding.
+	2. An ObjectID is lead by timestamp, therefore it can be ordered.
+*/
 package objectid
 
 import (
@@ -9,7 +18,7 @@ import (
 	"github.com/valyala/fastrand"
 )
 
-// ObjectID is a series of bytes with length of 12 or 16
+// ObjectID is a series of bytes with length of 12 or 16. The 16-bytes-lengthed ObjectID is compatable with standard MongoDB objectId.
 type ObjectID []byte
 
 // Len is equivalent with len(id)
@@ -20,7 +29,7 @@ func (id ObjectID) Len() int {
 	return len(id)
 }
 
-// String returns object id in hex format
+// String returns object id in hex format.
 func (id ObjectID) String() string {
 	if 0 == id.Len() {
 		return "nil"
@@ -28,7 +37,7 @@ func (id ObjectID) String() string {
 	return hex.EncodeToString([]byte(id))
 }
 
-// Time returns the time information stored in object id
+// Time returns the time information stored in object ID. If the id is extended (16 bytes length), nanoseconds will also be parsed.
 func (id ObjectID) Time() time.Time {
 	switch id.Len() {
 	default:
@@ -51,7 +60,7 @@ func (id ObjectID) Time() time.Time {
 	}
 }
 
-// New12 generates a standard Mongo Object ID
+// New12 generates a standard MongoDB object ID. The time.Time parameter is optional. If no time given, it generates ObjectID with current time.
 func New12(t ...time.Time) ObjectID {
 	var id primitive.ObjectID
 
@@ -64,7 +73,7 @@ func New12(t ...time.Time) ObjectID {
 	return id[:]
 }
 
-// New16 generates a extended Mongo Object ID, with tailing 4 bytes of nanoseconds
+// New16 generates a extended MongoDB object ID, with tailing 4 bytes of nanoseconds. The time.Time parameter is optional. If no time given, it generates ObjectID with current time.
 func New16(t ...time.Time) ObjectID {
 	var tm time.Time
 	if 0 == len(t) {
