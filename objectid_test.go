@@ -2,11 +2,12 @@ package objectid
 
 import (
 	"encoding/base64"
+	"strings"
 	"testing"
 	"time"
 )
 
-func Test_New12(t *testing.T) {
+func Test_New12_New16(t *testing.T) {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	var tm time.Time
 
@@ -84,7 +85,7 @@ func Test_MiscErrors(t *testing.T) {
 	}
 }
 
-func TestObjectidBase64(t *testing.T) {
+func Test_ObjectidBase64(t *testing.T) {
 	b64 := base64.StdEncoding
 	id16 := New16()
 	t.Logf("id16: %v", id16)
@@ -97,4 +98,64 @@ func TestObjectidBase64(t *testing.T) {
 
 	s12 := b64.EncodeToString(id12)
 	t.Logf("base64 for id12: %s, len %d", s12, len(s12))
+}
+
+func Test_NewByHex(t *testing.T) {
+	// Firstly, test a normal one
+	o := New16()
+	s := o.String()
+	newO, err := NewByHex(s)
+	if err != nil {
+		t.Errorf("parsed objectid %s failed: %v", s, err)
+		return
+	}
+	if newO.String() != s {
+		t.Errorf("parse objectid %v, but %v got", s, newO)
+		return
+	}
+
+	s = strings.ToUpper(s)
+	newO, err = NewByHex(s)
+	if err != nil {
+		t.Errorf("parsed objectid %s failed: %v", s, err)
+		return
+	}
+	if newO.String() != strings.ToLower(s) {
+		t.Errorf("parse objectid %v, but %v got", s, newO)
+		return
+	}
+
+	o = New12()
+	s = o.String()
+	newO, err = NewByHex(s)
+	if err != nil {
+		t.Errorf("parsed objectid %s failed: %v", s, err)
+		return
+	}
+	if newO.String() != s {
+		t.Errorf("parse objectid %v, but %v got", s, newO)
+		return
+	}
+
+	// Test error one - string illegal
+	s = s[:23] + "H" // generate a illegal one
+	_, err = NewByHex(s)
+	if err == nil {
+		t.Errorf("error expected for %s, but no error got", s)
+		return
+	}
+	t.Logf("expected return: %v", err)
+
+	// Test error one - length illegal
+	s = New16().String()
+	s += "AB"
+	t.Logf("length for s: %d", len(s))
+	_, err = NewByHex(s)
+	if err == nil {
+		t.Errorf("error expected for %s, but no error got", s)
+		return
+	}
+	t.Logf("expected return: %v", err)
+
+	return
 }

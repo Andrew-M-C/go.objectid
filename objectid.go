@@ -12,6 +12,7 @@ package objectid
 import (
 	"encoding/binary"
 	"encoding/hex"
+	"fmt"
 	"time"
 
 	"github.com/mongodb/mongo-go-driver/bson/primitive"
@@ -85,6 +86,22 @@ func New16(t ...time.Time) ObjectID {
 	id := primitive.NewObjectIDFromTimestamp(tm)
 	tailing := convTimeToTailingBytes(&tm)
 	return append(id[:], tailing...)
+}
+
+// NewByHex parse a objectid from given hex string
+func NewByHex(s string) (ObjectID, error) {
+	switch l := len(s); l {
+	case 24, 32:
+		// OK, continue
+	default:
+		return nil, fmt.Errorf("invalid hex length %d", l)
+	}
+
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		return nil, err
+	}
+	return ObjectID(b), nil
 }
 
 func rand4Bytes() []byte {
