@@ -104,6 +104,19 @@ func NewByHex(s string) (ObjectID, error) {
 	return ObjectID(b), nil
 }
 
+// NewByBytes parse a objectid from given byte slice
+func NewByBytes(b []byte) (ObjectID, error) {
+	if nil == b {
+		return nil, fmt.Errorf("nil bytes")
+	}
+	switch l := len(b); l {
+	case 12, 16:
+		return ObjectID(b), nil
+	default:
+		return nil, fmt.Errorf("invalid hex length %d", l)
+	}
+}
+
 func rand4Bytes() []byte {
 	u := fastrand.Uint32()
 	b := []byte{0, 0, 0, 0}

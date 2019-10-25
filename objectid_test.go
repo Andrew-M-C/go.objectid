@@ -159,3 +159,43 @@ func Test_NewByHex(t *testing.T) {
 
 	return
 }
+
+func Test_NewByBytes(t *testing.T) {
+	now := time.Now()
+	b12 := []byte(New12(now))
+	o12, err := NewByBytes(b12)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+		return
+	}
+	if o12.Time().Unix() != now.Unix() {
+		t.Errorf("time not equal for o12")
+		return
+	}
+
+	b16 := []byte(New16(now))
+	o16, err := NewByBytes(b16)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+		return
+	}
+	if false == o16.Time().Equal(now) {
+		t.Errorf("time not equal for o16")
+		return
+	}
+
+	// test error
+	_, err = NewByBytes(nil)
+	if err == nil {
+		t.Errorf("error expected but not caught")
+		return
+	}
+
+	_, err = NewByBytes([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	if err == nil {
+		t.Errorf("error expected but not caught")
+		return
+	}
+
+	return
+}
