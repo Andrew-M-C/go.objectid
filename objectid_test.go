@@ -70,6 +70,17 @@ func Test_New12_New16(t *testing.T) {
 	return
 }
 
+func TestUnixMilli(t *testing.T) {
+	now := time.Now()
+	milli := now.UnixNano() / 1000000
+
+	id := New16(now)
+	if milli != id.UnixMilli() {
+		t.Errorf("milli mismatch: %d != %d", milli, id.UnixMilli())
+	}
+	t.Logf("milli %d expected", milli)
+}
+
 func Test_MiscErrors(t *testing.T) {
 	var nilBytes []byte
 	var tm time.Time

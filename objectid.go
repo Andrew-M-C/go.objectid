@@ -142,3 +142,8 @@ func convTimeToTailingBytes(t *time.Time) []byte {
 	}
 	return convNanosecToBytes(nano)
 }
+
+// UnixMilli is equivalent id.Time().UnixNano / time.Millisecond
+func (id ObjectID) UnixMilli() int64 {
+	return id.Time().UnixNano() / int64(time.Millisecond)
+}

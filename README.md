@@ -1,9 +1,9 @@
 # objectid
 
 [![GoDoc](https://godoc.org/github.com/Andrew-M-C/go.objectid?status.svg)](https://godoc.org/github.com/Andrew-M-C/go.objectid)
-[![Build Status](https://travis-ci.org/Andrew-M-C/go.objectid.svg?branch=master)](https://travis-ci.org/Andrew-M-C/go.objectid)
+[![Build Status](https://travis-ci.org/Andrew-M-C/go.objectid.svg?branch=dev-v1.0.3)](https://travis-ci.org/Andrew-M-C/go.objectid)
 [![Coverage Status](https://coveralls.io/repos/github/Andrew-M-C/go.objectid/badge.svg)](https://coveralls.io/github/Andrew-M-C/go.objectid)
-[![Latest](https://img.shields.io/badge/latest-v1.0.2-blue.svg)](https://github.com/Andrew-M-C/go.objectid/tree/v1.0.2)
+[![Stable](https://img.shields.io/badge/stable-v1.0.2-blue.svg)](https://github.com/Andrew-M-C/go.objectid/tree/v1.0.2)
 
 Mongo object ID with 16-byte-length support (32 bytes in string), which could be replacement of UUID.
 
