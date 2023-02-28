@@ -15,8 +15,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mongodb/mongo-go-driver/bson/primitive"
 	"github.com/valyala/fastrand"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // ObjectID is a series of bytes with length of 12 or 16. The 16-bytes-lengthed ObjectID is compatable with standard MongoDB objectId.
